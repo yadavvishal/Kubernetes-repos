@@ -1,3 +1,7 @@
+#K8s-Deployment. Ensure that deployments can be created successfully with the desired number of replicas, correct container images along with other important deployment parameters.
+#Verify that rolling updates are performed without downtime, allowing users to access the application throughout the update process.
+
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
