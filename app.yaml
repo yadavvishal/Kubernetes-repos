@@ -1,0 +1,36 @@
+#create a simple Deployment and Service to represent your workload:
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo
+spec:
+  selector:
+    matchLabels:
+      app: demo
+  template:
+    metadata:
+      labels:
+        app: demo
+    spec:
+      containers:
+        - name: demo
+          image: registry.k8s.io/hpa-example:latest
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              cpu: 500m
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: demo
+spec:
+  selector:
+    app: demo
+  ports:
+    - port: 80
+
+
+#app.yaml,hpa.yaml
