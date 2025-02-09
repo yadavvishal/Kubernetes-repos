@@ -1,0 +1,15 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: hello-job
+spec:
+  template:
+    spec:
+      containers:
+      - name: hello-container
+        image: busybox
+        command: ["echo", "Hello, Kubernetes!"]
+      restartPolicy: Never  # Ensures it does not restart after completion
+
+# It give response that job has successfully run once and completed.
+# And print the hello,kubernetes

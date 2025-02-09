@@ -1,0 +1,15 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: print-date-cronjob
+spec:
+  schedule: "*/5 * * * *"  # Runs every 5 minutes
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: date-container
+            image: busybox
+            command: ["date"]
+          restartPolicy: OnFailure  # Ensures retry if it fails
