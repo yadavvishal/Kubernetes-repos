@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-with-soft-affinity
+spec:
+  affinity:
+    nodeAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution: # soft
+        - weight: 10
+          preference: 
+            matchExpressions:
+              - key: disktype
+                operator: In
+                values: 
+                    - ssd
+  containers:
+  - name: nginx-container
+    image: nginx
+    resources:
+      limits:
+        memory: "128Mi"
+        cpu: "500m"
+    ports:
+      - containerPort: 80
+
+# Prefers disktype=ssd nodes but can run elsewhere if needed.
