@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-anti-affinity-pod
+spec:
+  containers:
+    - name: nginx
+      image: nginx
+      resources:
+        limits:
+          memory: "128Mi"
+          cpu: "500m"
+  affinity:
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchExpressions:
+              - key: app  #key
+                operator: In
+                values:
+                  - backend   #value
+          topologyKey: "kubernetes.io/hostname"
+
+
+# this is the pod-anti-affinity
+
+#This pod uses pod anti-affinity to ensure it is NOT scheduled on the same node as a pod with the label app: backend.
