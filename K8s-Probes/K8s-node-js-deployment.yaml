@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vishal-nodejs
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: vishal-nodejs
+  template:
+    metadata:
+      labels:
+        app: vishal-nodejs
+    spec:
+      containers:
+        - name: nodejs
+          image: iamdeveloper04/vishal-nodejs
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "512m"
+            limits:
+              memory: "128Mi"
+              cpu: "512m"
+
+          ports:
+            - containerPort: 8080
+          
+          readinessProbe:  ## Checks if the app is ready to serve traffic.
+            httpGet:
+              path: /hello
+              port: 8080  ## Uses GET /hello on port 8080.
+            initialDelaySeconds: 15  ## start checking 15s after launch then every 10s
+            periodSeconds: 10
+
+          livenessProbe: ## Checks if the app is still running.
+            httpGet:
+              path: /hello
+              port: 8080
+            initialDelaySeconds: 15  ## Starts checking 15s after launch, then every 10s.
+            periodSeconds: 10
+          
+          startupProbe:  ## Checks if the app has started properly.
+            httpGet:
+              path: /hello
+              port: 8080
+            failureThreshold: 30  ## Allows up to 30 failures (5 minutes) before considering startup failed.
+            periodSeconds: 10
+
+          env:
+            - name: PORT
+              value: "8080"
