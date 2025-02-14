@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp
+  labels:
+    name: myapp
+spec:
+  volumes: 
+    - name: config-volume
+      configMap: 
+          name: my-configmap
+  containers:
+  - name: my-container
+    image: nginx
+    volumeMounts:
+      - name: config-volume
+        mountPath: /etc/config
+    resources:
+      limits:
+        memory: "128Mi"
+        cpu: "500m"
+    ports:
+      - containerPort: 8080
+
+
+
+# volumeMounts: → Defines where the config-volume should be mounted inside the container.
+
+# - name: config-volume → References the config-volume from the volumes section.
+# mountPath: /etc/config → The contents of my-configmap will be available inside the container at /etc/config
+
+
+# Summary
+# This YAML creates a Pod named myapp with a single Nginx container (my-container).
+# A ConfigMap (my-configmap) is mounted inside the container at /etc/config.
+# The container has resource limits of 128 MB RAM and 0.5 CPU cores.
+# The container listens on port 8080

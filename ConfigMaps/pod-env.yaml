@@ -1,0 +1,46 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+  labels:
+    name: myapp
+spec:
+  containers:
+    - name: my-container
+      image: nginx
+      env:
+        - name: key1
+          valueFrom:
+            configMapKeyRef:
+              name: my-configmap
+              key: key1
+
+        - name: key2
+          valueFrom:
+            configMapKeyRef:
+              name: my-configmap
+              key: key2
+      resources:
+        limits:
+          memory: "128Mi"
+          cpu: "500m"
+      ports:
+        - containerPort: 8080
+
+
+
+
+# env: → Defines environment variables for the container.
+# name: key1 → Creates an environment variable key1.
+# valueFrom: → Gets the value from a ConfigMap.
+# configMapKeyRef: → References a key from a ConfigMap.
+# name: my-configmap → Refers to the ConfigMap named my-configmap.
+# key: key1 → Retrieves the value of the key1 field from my-configmap.
+
+
+# Key Takeaways
+# 1️⃣ This Pod runs an Nginx container.
+# 2️⃣ It injects environment variables (key1, key2) from a ConfigMap (my-configmap).
+# 3️⃣ If you update the ConfigMap, the running container won't see the changes until restarted.
+# 4️⃣ Resource limits are set to 128MB RAM and 0.5 CPU.
+# # 5️⃣ The container listens on port 8080.
