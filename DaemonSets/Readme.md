@@ -109,7 +109,8 @@ spec:
    - Using `maxUnavailable` in `updateStrategy` can help prevent downtime.
 
 ## Monitoring Metrics
-Once deployed, metrics will be available at:
+Once deployed, Need to port forward then the metrics will be available at:
+Port forward command - kubectl port-forward podName 9100:9100
 ```
 http://<node-ip>:9100/metrics
 ```
