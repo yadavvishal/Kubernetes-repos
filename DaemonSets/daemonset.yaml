@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: node-exporter
+spec:
+  selector:
+    matchLabels:
+      app: node-exporter
+  template:
+    metadata:
+      labels:
+        app: node-exporter
+    spec:
+      # nodeSelector:
+      #   kubernetes.io/os: linux
+      containers:
+      - name: node-exporter
+        image: prom/node-exporter:latest
+        args:
+          - --path.procfs=/host/proc
+          - --path.sysfs=/host/sys
+        ports:
+        - name: metrics
+          containerPort: 9100
+        volumeMounts:
+        - name: procfs
+          mountPath: /host/proc
+          readOnly: true
+        - name: sysfs
+          mountPath: /host/sys
+          readOnly: true
+      volumes:
+      - name: procfs
+        hostPath:
+          path: /proc
+      - name: sysfs
+        hostPath:
+          path: /sys
+
+
+
+#   args: Passes command-line arguments to node-exporter when it starts.
+# --path.procfs=/host/proc: Tells Node Exporter to read process data from /host/proc.
+# --path.sysfs=/host/sys: Tells Node Exporter to read system data from /host/sys.
+# These flags ensure that Node Exporter correctly reads system metrics from the host machine (instead of from within the container).
+
+
+
+# volumeMounts: Mounts host directories into the container.
+# name: procfs: Refers to a volume named procfs.
+# mountPath: /host/proc: Mounts the host’s /proc directory inside the container at /host/proc.
+# readOnly: true: Ensures the container cannot modify the host’s /proc directory.
+# Similarly, the sysfs volume mounts /sys as read-only.
+
+
+# volumes: Defines storage volumes used by the container.
+# hostPath: Mounts a directory from the host machine into the container.
+# path: /proc: Refers to the host’s /proc directory.
+# path: /sys: Refers to the host’s /sys directory.
